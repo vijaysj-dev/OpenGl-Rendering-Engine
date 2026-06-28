@@ -7,7 +7,7 @@ An optimized, modern C++ rendering framework providing the foundational core gra
 - **Automated Shader Pipeline:** Encapsulated `Shader` class handles raw string loading, automated multi-stage compilation (`GL_COMPILE_STATUS`), and pipeline linking verification (`GL_LINK_STATUS`) behind the scenes.
 - **VRAM Hygiene Management:** Fully RAII-compliant abstraction via custom C++ object lifecycles; class destructors seamlessly clear allocated hardware programs from GPU hardware resources (`glDeleteProgram`).
 - **Clean Vertex Blueprints:** Structured coordinate matrices drafting seamless triangle layouts to connect multi-vertex quads without memory skewing.
-- **Git Optimization:** Configured `.gitignore` targeting specific Visual Studio compiler footprint modules (`.vs/`, `x64/`, build caches) to sustain an ultra-clean version control layout.
+
 
 ## Project Structure
 
