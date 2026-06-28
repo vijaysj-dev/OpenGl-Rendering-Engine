@@ -1,0 +1,22 @@
+# ==========================================
+# Visual Studio Cache & Personal User Settings
+# ==========================================
+.vs/
+*.user
+*.filters
+
+# ==========================================
+# Compiled Binaries and Build Output Directories
+# ==========================================
+x64/
+x86/
+[Dd]ebug/
+[Rr]elease/
+
+# Target individual raw build extensions explicitly
+*.obj
+*.exe
+*.pdb
+*.ilk
+*.log
+*.tlog
