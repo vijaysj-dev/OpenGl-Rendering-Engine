@@ -6,14 +6,51 @@
 
 // helper functions
 using namespace std;
+Shader::Shader(const char* vertexPath, const char* fragmentPath){
+    string vertexFilePath = ShaderSource(vertexPath);
+    string fragmentFilePath = ShaderSource(fragmentPath);
 
-//Shader::Shader(const char* vertexPath, const char* fragmentPath){
-//    string vertexFilePath = ShaderSource(vertexPath);
-//    string fragmentFilePath = ShaderSource(fragmentPath);
-//
-//    
-//
-//};
+    vertexID = CompileShader(GL_VERTEX_SHADER, vertexFilePath);
+    fragmentID = CompileShader(GL_FRAGMENT_SHADER, fragmentFilePath);
+
+    programID = glCreateProgram();
+    glAttachShader(programID, vertexID);
+    glAttachShader(programID, fragmentID);
+    glLinkProgram(programID);
+
+    // if things go wrong...
+    // for vertexID and fragmentID compileShader handles everything 
+    int success;
+    glGetProgramiv(programID, GL_LINK_STATUS, &success);
+    if (!success) {
+        string type = "PROGRAM"; 
+        char infoLog[1024];
+        glGetProgramInfoLog(programID, 1024, NULL, infoLog);
+        cerr << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << endl;
+    }
+
+    glDeleteShader(vertexID);
+    glDeleteShader(fragmentID);
+
+
+};
+
+Shader::~Shader() {
+    // check to ensure a valid programID still exist
+    if (programID != 0) {
+        glDeleteProgram(programID);
+    }
+}
+
+void Shader::Use() const {
+    glUseProgram(programID); 
+}
+
+void Shader::Unbind() const {
+    glUseProgram(0);
+}
+
+
 unsigned int CompileShader(unsigned int type, const std::string& source) {
 	unsigned int ID = glCreateShader(type);
 	const char* src= source.c_str();
@@ -24,6 +61,7 @@ unsigned int CompileShader(unsigned int type, const std::string& source) {
 	int success;
 	char infoLog[1024];
 	glGetShaderiv(ID, GL_COMPILE_STATUS, &success);
+
 	if (!success) {
 		glGetShaderInfoLog(ID, 1024, nullptr, infoLog); // logs info
 		std::cerr << "COMPILATION_FAILED of type: "
@@ -38,7 +76,7 @@ unsigned int CompileShader(unsigned int type, const std::string& source) {
 
 }
 
-string ShaderSource(const string& file_name) {
+string Shader::ShaderSource(const string & file_name) {
     ifstream ShaderFile;
     stringstream ShaderStream;
 

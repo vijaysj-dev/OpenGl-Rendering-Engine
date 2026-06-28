@@ -3,36 +3,36 @@
 #include <iostream>
 #include <fstream>   // NEEDED FOR FILES
 #include <sstream>   // NEEDED FOR STRINGS
-
+#include "Shader.h"
 
 using namespace std;
 
-string ShaderSource(const string& file_name) {
-    ifstream ShaderFile;
-    stringstream ShaderStream;
-
-    ShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
-    try {
-        ShaderFile.open(file_name);
-        ShaderStream << ShaderFile.rdbuf();
-        ShaderFile.close();
-
-            
-    }
-    catch (const exception& e) { // FIX: Catch by const reference
-        cerr << "ERROR: Something went wrong while reading the shader: " << file_name << "\n";
-        cerr << "Details: " << e.what() << "\n"; // Optional: Prints the exact OS error
-        return "";
-    }
-
-    string shaderCode = ShaderStream.str();
-    // Safety check: Did we actually get code?
-    if (shaderCode.empty()) {
-        cerr << "ERROR: Shader file was empty: " << file_name << "\n";
-    }
-
-    return shaderCode;  
-}
+//string ShaderSource(const string& file_name) {
+//    ifstream ShaderFile;
+//    stringstream ShaderStream;
+//
+//    ShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
+//    try {
+//        ShaderFile.open(file_name);
+//        ShaderStream << ShaderFile.rdbuf();
+//        ShaderFile.close();
+//
+//            
+//    }
+//    catch (const exception& e) { // FIX: Catch by const reference
+//        cerr << "ERROR: Something went wrong while reading the shader: " << file_name << "\n";
+//        cerr << "Details: " << e.what() << "\n"; // Optional: Prints the exact OS error
+//        return "";
+//    }
+//
+//    string shaderCode = ShaderStream.str();
+//    // Safety check: Did we actually get code?
+//    if (shaderCode.empty()) {
+//        cerr << "ERROR: Shader file was empty: " << file_name << "\n";
+//    }
+//
+//    return shaderCode;  
+//}
 
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -61,12 +61,7 @@ int main() {
 
 
 
-    string VertBuffStrCvt = ShaderSource("D:\\GeneralCompute\\GeneralCompute\\Shaders\\vertex.vert");
-    const char* vertexShaderSource = VertBuffStrCvt.c_str();
-
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+   
 
     //  fragment Shader 
    /* const char* fragmentShaderSource = "#version 330 core\n"
@@ -76,23 +71,7 @@ int main() {
         " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f); // Orange color\n"
         "}\0";*/
 
-    string fragmentBuffStrCvt = ShaderSource("D:\\GeneralCompute\\GeneralCompute\\Shaders\\FragmentShader.frag");
-    const char* fragmentShaderSource = fragmentBuffStrCvt.c_str();
-
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    //link Shaders into a Program 
-    unsigned int shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader); // Attached fragment shader
-    glLinkProgram(shaderProgram);
-
-    // clean up individual shaders as they are linked into the program now
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
+    Shader newShader("D:\\GeneralCompute\\GeneralCompute\\Shaders\\vertex.vert", "D:\\GeneralCompute\\GeneralCompute\\Shaders\\FragmentShader.frag");
     // Set up Vertex Data and Buffers 
     float vertices[] = {
         // Triangle 1 (Bottom-Left half)
@@ -133,7 +112,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Draw the triangle
-        glUseProgram(shaderProgram);
+        newShader.Use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -144,7 +123,6 @@ int main() {
     // Optional Clean up
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
 
     glfwTerminate();
     return 0;
