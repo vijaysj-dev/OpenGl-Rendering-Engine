@@ -7,32 +7,7 @@
 
 using namespace std;
 
-//string ShaderSource(const string& file_name) {
-//    ifstream ShaderFile;
-//    stringstream ShaderStream;
-//
-//    ShaderFile.exceptions(ifstream::failbit | ifstream::badbit);
-//    try {
-//        ShaderFile.open(file_name);
-//        ShaderStream << ShaderFile.rdbuf();
-//        ShaderFile.close();
-//
-//            
-//    }
-//    catch (const exception& e) { // FIX: Catch by const reference
-//        cerr << "ERROR: Something went wrong while reading the shader: " << file_name << "\n";
-//        cerr << "Details: " << e.what() << "\n"; // Optional: Prints the exact OS error
-//        return "";
-//    }
-//
-//    string shaderCode = ShaderStream.str();
-//    // Safety check: Did we actually get code?
-//    if (shaderCode.empty()) {
-//        cerr << "ERROR: Shader file was empty: " << file_name << "\n";
-//    }
-//
-//    return shaderCode;  
-//}
+
 
 void processInput(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -61,21 +36,11 @@ int main() {
 
 
 
-   
-
-    //  fragment Shader 
-   /* const char* fragmentShaderSource = "#version 330 core\n"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{\n"
-        " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f); // Orange color\n"
-        "}\0";*/
-
     Shader newShader("D:\\GeneralCompute\\GeneralCompute\\Shaders\\vertex.vert", "D:\\GeneralCompute\\GeneralCompute\\Shaders\\FragmentShader.frag");
     // Set up Vertex Data and Buffers 
     float vertices[] = {
         // Triangle 1 (Bottom-Left half)
-        -0.5f, -0.3f, 0.0f,  // Bottom-Left
+        -0.5f, -0.5f, 0.5f,  // Bottom-Left
          0.5f, -0.5f, 0.0f,  // Bottom-Right
         -0.5f,  0.5f, 0.0f,  // Top-Left
 
@@ -93,6 +58,7 @@ int main() {
 
     // bind VAO first, then bind and set vertex buffers, then configure attributes
     glBindVertexArray(VAO);
+   
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -103,10 +69,30 @@ int main() {
     // Unbind buffers to prevent accidental modification 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    // render loop
+    float direction = 0.001f;
+   
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
+        if (vertices[0] >= 1.0f) {
+            direction = -0.001f;
+        }
+        else if (vertices[0] <= -1.0f) {
+            direction = 0.001f;
+        }
+
+       
+        // Since each vertex has 3 components (X, Y, Z), the Y-coordinates 
+        // are located at indices 1, 4, 7, 10, 13, and 16.
+        for (int i = 0; i < 18; i += 3) {
+            vertices[i] += direction;
+        }
+       
+
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
