@@ -4,7 +4,7 @@
 #include <fstream>   // NEEDED FOR FILES
 #include <sstream>   // NEEDED FOR STRINGS
 #include "Shader.h"
-
+#include<vector>
 using namespace std;
 
 
@@ -38,7 +38,7 @@ int main() {
 
     Shader newShader("D:\\GeneralCompute\\GeneralCompute\\Shaders\\vertex.vert", "D:\\GeneralCompute\\GeneralCompute\\Shaders\\FragmentShader.frag");
     // Set up Vertex Data and Buffers 
-    float vertices[] = {
+     vector<float> vertices= {
         // triangle 1 (Bottom-Left half)
         -0.5f, -0.5f, 0.0f,  // Bottom-Left     0,1,2
          0.5f, -0.5f, 0.0f,  // Bottom-Right    3,4,5
@@ -81,7 +81,7 @@ int main() {
    
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -112,7 +112,7 @@ int main() {
 
 
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_DYNAMIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
