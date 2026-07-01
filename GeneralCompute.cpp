@@ -86,7 +86,7 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Unbind buffers to prevent accidental modification 
+    // unbind buffers to prevent accidental modification .... good 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     float direction = 0.001f;
@@ -102,9 +102,7 @@ int main() {
             direction = 0.001f;
         }
 
-       
-        // Since each vertex has 3 components (X, Y, Z), the Y-coordinates 
-        // are located at indices 1, 4, 7, 10, 13, and 16.
+     
         for (int i = 0; i < 18; i += 3) {
             vertices[i] += direction;
         }
@@ -120,7 +118,7 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Draw the triangle
+        // Draw it genius!!!!......
         newShader.Use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -129,7 +127,7 @@ int main() {
         glfwPollEvents();
     }
 
-    // Optional Clean up
+    // clean up
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 
