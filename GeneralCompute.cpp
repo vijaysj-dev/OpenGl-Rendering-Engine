@@ -50,7 +50,7 @@ int main() {
         -0.5f,  0.5f, 0.0f   // Top-Left        15,16,17
     };
 
-    //horizontal scaling
+    //scaling
     float scale = 0.3f;
     vertices[0] = scale+vertices[0];
     vertices[9] = vertices[9] - scale;
@@ -61,7 +61,8 @@ int main() {
 
     vertices[12] = vertices[12] - scale;
 
-    //vertical scaling 
+
+    //
     vertices[1] = scale + vertices[1];
     vertices[4] = scale + vertices[4];
     vertices[10] = scale + vertices[10];
