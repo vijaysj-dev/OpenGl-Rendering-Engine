@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="GeneralCompute.cpp" />
     <ClCompile Include="gl.c" />
+    <ClCompile Include="mathEngine.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +144,7 @@
     <None Include="vertex.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="mathEngine.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

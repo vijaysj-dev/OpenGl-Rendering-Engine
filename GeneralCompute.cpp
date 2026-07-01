@@ -39,18 +39,38 @@ int main() {
     Shader newShader("D:\\GeneralCompute\\GeneralCompute\\Shaders\\vertex.vert", "D:\\GeneralCompute\\GeneralCompute\\Shaders\\FragmentShader.frag");
     // Set up Vertex Data and Buffers 
     float vertices[] = {
-        // Triangle 1 (Bottom-Left half)
-        -0.5f, -0.5f, 0.5f,  // Bottom-Left
-         0.5f, -0.5f, 0.0f,  // Bottom-Right
-        -0.5f,  0.5f, 0.0f,  // Top-Left
+        // triangle 1 (Bottom-Left half)
+        -0.5f, -0.5f, 0.0f,  // Bottom-Left     0,1,2
+         0.5f, -0.5f, 0.0f,  // Bottom-Right    3,4,5
+        -0.5f,  0.5f, 0.0f,  // Top-Left        6,7,8
 
-        // Triangle 2 (Top-Right half)
-         0.5f, -0.5f, 0.0f,  // Bottom-Right
-         0.5f,  0.5f, 0.0f,  // Top-Right
-        -0.5f,  0.5f, 0.0f   // Top-Left
+        // triangle 2 (Top-Right half)
+         0.5f, -0.5f, 0.0f,  // Bottom-Right    9,10,11
+         0.5f,  0.5f, 0.0f,  // Top-Right       12,13,14
+        -0.5f,  0.5f, 0.0f   // Top-Left        15,16,17
     };
 
+    //horizontal scaling
+    float scale = 0.3f;
+    vertices[0] = scale+vertices[0];
+    vertices[9] = vertices[9] - scale;
+    vertices[3] = vertices[3] - scale;
 
+    vertices[6] = scale + vertices[6];
+    vertices[15] = scale + vertices[15];
+
+    vertices[12] = vertices[12] - scale;
+
+    //vertical scaling 
+    vertices[1] = scale + vertices[1];
+    vertices[4] = scale + vertices[4];
+    vertices[10] = scale + vertices[10];
+
+    vertices[7] = vertices[7] - scale;
+    vertices[13] = vertices[13] - scale;
+    vertices[16] = vertices[16] - scale;
+
+     
     // geometry setup 
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
@@ -72,6 +92,7 @@ int main() {
     float direction = 0.001f;
    
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
         if (vertices[0] >= 1.0f) {
@@ -87,6 +108,8 @@ int main() {
         for (int i = 0; i < 18; i += 3) {
             vertices[i] += direction;
         }
+
+
        
 
 
